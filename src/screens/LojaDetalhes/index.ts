@@ -1,0 +1,1 @@
+export { LojaDetalhes } from "./LojaDetalhes";
