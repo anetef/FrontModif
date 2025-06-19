@@ -1,5 +1,4 @@
-// src/services/api.ts
-
+// Define a URL base do seu backend. Importante para que o frontend saiba onde enviar as requisições.
 const API_BASE = "http://localhost:3000";
 
 export async function fetchUsers() {
@@ -29,7 +28,7 @@ export async function createUser(user: { nome: string; email: string; senha: str
 }
 
 export async function login(email: string, senha: string) {
-  const response = await fetch(`${API_BASE}/auth/login`, {
+  const response = await fetch(`${API_BASE}/user/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +36,6 @@ export async function login(email: string, senha: string) {
     body: JSON.stringify({
       email,
       senha,
-      type: "user", // 👈 enviado automaticamente, mesmo oculto do Swagger
     }),
     credentials: 'include' 
   });

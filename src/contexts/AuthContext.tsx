@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { login as apiLogin, createUser as apiRegisterUser } from '../services/api'; // Importar as funções da API
+import { login as apiLogin, createUser as apiRegisterUser } from '../services/api'; // Importa as funções da API
 
-interface User {
-  id: string;
+interface User { //define a estrutura de um usuario no front
+  id: number; 
   name: string;
   email: string;
 }
 
-interface AuthContextType {
+interface AuthContextType { // define o formato de contexto de autenticação disponibel para os componentes
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
   register: (name: string, email: string, password: string) => Promise<boolean>;
@@ -44,23 +44,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
-      // Chamar a função de login da API real
+      //Tiramos os usuarios de teste Mockados 
+      // Chama a função de login da API 
       const response = await apiLogin(email, password);
-      if (response && response.user && response.user.id && response.user.name && response.user.email) {
+      if (response && response.user && response.user.id && response.user.nome && response.user.email) {
         const userData: User = { 
             id: response.user.id, 
-            name: response.user.name, 
+            name: response.user.nome,
             email: response.user.email 
         };
         setUser(userData);
         localStorage.setItem('hortifood_user', JSON.stringify(userData));
         return true;
       } else {
-        console.error("Login API response malformed:", response);
+        console.error("Login API response malformed or missing 'nome' property:", response);
         return false;
       }
-    } catch (error) {
-      console.error("Erro no login:", error);
+    } catch (error: any) {
+      console.error("Erro no login:", error.message || error);
       return false;
     } finally {
       setIsLoading(false);
@@ -69,23 +70,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    try {                                                                               // Chamar a função de criação de usuário da API real
-      const newUser = await apiRegisterUser({ nome: name, email, senha: password });  // Após o registro, você pode optar por logar o usuário automaticamente
-      if (newUser && newUser.id && newUser.name && newUser.email) {
+    try {
+      // Chama a função de criação de usuário da API
+      const newUser = await apiRegisterUser({ nome: name, email, senha: password });
+      if (newUser && newUser.id && newUser.nome && newUser.email) { 
           const userData: User = { 
             id: newUser.id, 
-            name: newUser.name, 
+            name: newUser.nome,
             email: newUser.email 
           };
+
           setUser(userData);
           localStorage.setItem('hortifood_user', JSON.stringify(userData));
           return true;
       } else {
-          console.error("Register API response malformed:", newUser);
+          console.error("Register API response malformed or missing 'nome' property:", newUser);
           return false;
       }
-    } catch (error) {
-      console.error("Erro no registro:", error);
+    } catch (error: any) {
+      console.error("Erro no registro:", error.message || error);
       return false;
     } finally {
       setIsLoading(false);
