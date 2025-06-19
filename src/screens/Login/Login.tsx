@@ -163,8 +163,8 @@ export const Login = (): JSX.Element => {
               <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
                 <p className="text-sm text-blue-800 font-medium mb-2">Contas de demonstração:</p>
                 <div className="text-xs text-blue-700 space-y-1">
-                  <p><strong>Email:</strong> joao@email.com | <strong>Senha:</strong> 123456</p>
-                  <p><strong>Email:</strong> maria@email.com | <strong>Senha:</strong> 123456</p>
+                 {/* <p><strong>Email:</strong> joao@email.com | <strong>Senha:</strong> 123456</p>
+                  <p><strong>Email:</strong> maria@email.com | <strong>Senha:</strong> 123456</p>*/}
                 </div>
               </div>
             )}

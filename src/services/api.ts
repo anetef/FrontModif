@@ -3,7 +3,10 @@
 const API_BASE = "http://localhost:3000";
 
 export async function fetchUsers() {
-  const response = await fetch(`${API_BASE}/user`);
+  const response = await fetch(`${API_BASE}/user`,{
+    credentials: 'include' 
+  });
+  
   if (!response.ok) {
     throw new Error("Erro ao buscar usuários");
   }
@@ -36,6 +39,7 @@ export async function login(email: string, senha: string) {
       senha,
       type: "user", // 👈 enviado automaticamente, mesmo oculto do Swagger
     }),
+    credentials: 'include' 
   });
 
   if (!response.ok) {

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { login as apiLogin, createUser as apiRegisterUser } from '../services/api'; // Importar as funções da API
 
 interface User {
   id: string;
@@ -33,7 +34,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on app start
     const savedUser = localStorage.getItem('hortifood_user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -43,47 +43,53 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock authentication - in real app, this would be an API call
-    const mockUsers = [
-      { id: '1', name: 'João Silva', email: 'joao@email.com', password: '123456' },
-      { id: '2', name: 'Maria Santos', email: 'maria@email.com', password: '123456' }
-    ];
-    
-    const foundUser = mockUsers.find(u => u.email === email && u.password === password);
-    
-    if (foundUser) {
-      const userData = { id: foundUser.id, name: foundUser.name, email: foundUser.email };
-      setUser(userData);
-      localStorage.setItem('hortifood_user', JSON.stringify(userData));
+    try {
+      // Chamar a função de login da API real
+      const response = await apiLogin(email, password);
+      if (response && response.user && response.user.id && response.user.name && response.user.email) {
+        const userData: User = { 
+            id: response.user.id, 
+            name: response.user.name, 
+            email: response.user.email 
+        };
+        setUser(userData);
+        localStorage.setItem('hortifood_user', JSON.stringify(userData));
+        return true;
+      } else {
+        console.error("Login API response malformed:", response);
+        return false;
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
+      return false;
+    } finally {
       setIsLoading(false);
-      return true;
     }
-    
-    setIsLoading(false);
-    return false;
   };
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock registration - in real app, this would be an API call
-    const userData = { 
-      id: Date.now().toString(), 
-      name, 
-      email 
-    };
-    
-    setUser(userData);
-    localStorage.setItem('hortifood_user', JSON.stringify(userData));
-    setIsLoading(false);
-    return true;
+    try {                                                                               // Chamar a função de criação de usuário da API real
+      const newUser = await apiRegisterUser({ nome: name, email, senha: password });  // Após o registro, você pode optar por logar o usuário automaticamente
+      if (newUser && newUser.id && newUser.name && newUser.email) {
+          const userData: User = { 
+            id: newUser.id, 
+            name: newUser.name, 
+            email: newUser.email 
+          };
+          setUser(userData);
+          localStorage.setItem('hortifood_user', JSON.stringify(userData));
+          return true;
+      } else {
+          console.error("Register API response malformed:", newUser);
+          return false;
+      }
+    } catch (error) {
+      console.error("Erro no registro:", error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const logout = () => {
