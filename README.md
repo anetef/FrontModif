@@ -2,6 +2,25 @@
 
 Bem-vindo ao repositório do frontend do projeto HortiFood! Esta aplicação é construída com React e estilizada com Tailwind CSS, focando em proporcionar uma experiência de usuário intuitiva para o fluxo de compra, desde a autenticação até o gerenciamento do carrinho e finalização do pedido.
 
+## Mudança principal do projeto anterior
+ ### Rota: src/contexts/AuthContext.tsx
+Implementamos uma API no back-end para gerenciar a conexão, a autenticação e o armazenamento de usuários cadastrados. Isso significa que, agora, os dados dos usuários não estão mais armazenados diretamente no código do front-end, mas sim em um banco de dados no back-end.
+
+### Implementação anterior 
+
+![web-ex](https://github.com/user-attachments/assets/90487759-ca17-4053-9be2-ccba43285057)
+
+```
+Link do repositori do projeto back anterior
+```
+https://github.com/anetef/ProjetoWebFrontEnd.git
+
+### Nova implementação chamada da API que se conecta ao Back-end
+
+
+![image](https://github.com/user-attachments/assets/ff939df1-2400-47ba-8d0a-2f59d8da4723)
+
+
 ## Sumário
 
 * [Visão Geral](#visão-geral)
