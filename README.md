@@ -11,7 +11,7 @@ Implementamos uma API no back-end para gerenciar a conexão, a autenticação e 
 ![web-ex](https://github.com/user-attachments/assets/90487759-ca17-4053-9be2-ccba43285057)
 
 ```
-Link do repositori do projeto back anterior
+Link do repositorio do projeto back anterior
 ```
 https://github.com/anetef/ProjetoWebFrontEnd.git
 
